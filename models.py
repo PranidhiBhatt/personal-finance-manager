@@ -28,19 +28,16 @@ class Income:
 
     def __init__(
         self,
-        income_id,
-        user_id,
         source,
         amount,
-        income_date
+        income_date,
+        user_id
     ):
 
-        self.income_id = income_id
-        self.user_id = user_id
         self.source = source
         self.amount = amount
         self.income_date = income_date
-
+        self.user_id = user_id
 
 class Budget:
 

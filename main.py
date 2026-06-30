@@ -1,5 +1,6 @@
 from auth import AuthManager
 from expense import ExpenseManager
+from income import IncomeManager
 
 
 class PersonalFinanceManager:
@@ -50,6 +51,7 @@ class PersonalFinanceManager:
     def main_menu(self, user):
 
         expense = ExpenseManager(user)
+        income = IncomeManager(user)
 
         while True:
 
@@ -71,7 +73,7 @@ class PersonalFinanceManager:
 
             elif choice == "2":
 
-                print("\nIncome Module Coming Soon!")
+                self.income_menu(income)
 
             elif choice == "3":
 
@@ -84,6 +86,7 @@ class PersonalFinanceManager:
             elif choice == "5":
 
                 expense.close_connection()
+                income.close_connection()
 
                 print("\nLogged Out Successfully.")
 
@@ -113,9 +116,9 @@ class PersonalFinanceManager:
             print("7. Back")
 
             choice = input("\nEnter Choice: ")
-
+            
             if choice == "1":
-
+                
                 expense.add_expense()
 
             elif choice == "2":
@@ -145,6 +148,54 @@ class PersonalFinanceManager:
             else:
 
                 print("\nInvalid Choice.")
+    # ==========================================
+    # INCOME MENU
+    # ==========================================
+
+    def income_menu(self, income):
+        while True:
+            print("\n" + "=" * 50)
+            print("         INCOME MANAGEMENT")
+            print("=" * 50)
+
+            print("1. Add Income")
+            print("2. Show Income")
+            print("3. Update Income")
+            print("4. Delete Income")
+            print("5. Total Income")
+            print("6. Back")
+
+            choice = input("\nEnter Choice: ")
+        
+
+            if choice == "1":
+
+               income.add_income()
+
+            elif choice == "2":
+
+                income.show_income()
+                
+            elif choice == "3":
+                
+                income.update_income()
+                
+            elif choice == "4":
+                
+                income.delete_income()
+                
+            elif choice == "5":
+                
+                income.total_income()
+                
+            elif choice == "6":
+                
+                break
+            
+            else:
+                
+                print("\nInvalid Choice.")
+                
 if __name__ == "__main__":
 
     app = PersonalFinanceManager()
