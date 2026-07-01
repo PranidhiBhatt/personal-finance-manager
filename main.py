@@ -1,6 +1,7 @@
 from auth import AuthManager
 from expense import ExpenseManager
 from income import IncomeManager
+from budget import BudgetManager
 
 
 class PersonalFinanceManager:
@@ -52,6 +53,7 @@ class PersonalFinanceManager:
 
         expense = ExpenseManager(user)
         income = IncomeManager(user)
+        budget = BudgetManager(user)
 
         while True:
 
@@ -77,7 +79,7 @@ class PersonalFinanceManager:
 
             elif choice == "3":
 
-                print("\nBudget Module Coming Soon!")
+                self.budget_menu(budget)
 
             elif choice == "4":
 
@@ -195,6 +197,40 @@ class PersonalFinanceManager:
             else:
                 
                 print("\nInvalid Choice.")
+
+    # ==========================================
+    # BUDGET MENU
+    # ==========================================
+
+    def budget_menu(self, budget):
+        while True:
+            print("\n" + "=" * 50)
+            print("         BUDGET MANAGEMENT")
+            print("=" * 50)
+            
+            print("1. Add Budget")
+            print("2. Show Budget")
+            print("3. Update Budget")
+            print("4. Delete Budget")
+            print("5. Total Budget")
+            print("6. Back")
+            
+            choice = input("\nEnter Choice: ")
+
+            if choice == "1":
+               budget.add_budget()
+            elif choice == "2":
+               budget.show_budget()
+            elif choice == "3":
+               budget.update_budget()
+            elif choice == "4":
+               budget.delete_budget()
+            elif choice == "5":
+               budget.total_budget()
+            elif choice == "6":
+               break
+            else:
+               print("\nInvalid Choice.")
                 
 if __name__ == "__main__":
 
