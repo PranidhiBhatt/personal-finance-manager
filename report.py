@@ -14,12 +14,27 @@ class ReportManager:
 
         self.cursor = self.connection.cursor()
     # ==========================================
+    # MONTH
+    # ==========================================
+
+    def validate_month(self):
+
+        while True:
+
+            month = input("Enter Month (YYYY-MM): ").strip()
+
+            if len(month) == 7 and month[4] == "-":
+
+                return month
+
+            print("Invalid format. Use YYYY-MM.")
+    # ==========================================
     # BUDGET ANALYSIS
     # ==========================================
 
     def budget_analysis(self):
 
-        month = input("\nEnter Month (YYYY-MM): ").strip()
+        month = self.validate_month()
 
         sql = """
         SELECT
@@ -127,7 +142,7 @@ class ReportManager:
 
     def budget_summary(self):
 
-        month = input("\nEnter Month (YYYY-MM): ").strip()
+        month = self.validate_month()
 
         budget_sql = """
         SELECT COALESCE(SUM(budget_amount), 0)
@@ -205,7 +220,7 @@ class ReportManager:
 
     def overspending_alerts(self):
 
-        month = input("\nEnter Month (YYYY-MM): ").strip()
+        month = self.validate_month()
 
         sql = """
         SELECT
@@ -282,7 +297,7 @@ class ReportManager:
 
     def financial_dashboard(self):
 
-        month = input("\nEnter Month (YYYY-MM): ").strip()
+        month = self.validate_month()
 
         try:
 
@@ -383,7 +398,7 @@ class ReportManager:
 
     def income_vs_expense(self):
 
-        month = input("\nEnter Month (YYYY-MM): ").strip()
+        month = self.validate_month()
 
         income_sql = """
         SELECT COALESCE(SUM(amount),0)
@@ -447,7 +462,7 @@ class ReportManager:
 
     def savings_report(self):
 
-        month = input("\nEnter Month (YYYY-MM): ").strip()
+        month = self.validate_month()
 
         income_sql = """
         SELECT COALESCE(SUM(amount),0)

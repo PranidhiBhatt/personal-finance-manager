@@ -3,6 +3,7 @@ from expense import ExpenseManager
 from income import IncomeManager
 from budget import BudgetManager
 from report import ReportManager
+from charts import ChartManager
 
 
 class PersonalFinanceManager:
@@ -56,6 +57,7 @@ class PersonalFinanceManager:
         income = IncomeManager(user)
         budget = BudgetManager(user)
         report = ReportManager(user)
+        charts = ChartManager(user)
 
         while True:
 
@@ -67,7 +69,8 @@ class PersonalFinanceManager:
             print("2. Income Management")
             print("3. Budget Management")
             print("4. Reports")
-            print("5. Logout")
+            print("5. Charts")
+            print("6. Logout")
 
             choice = input("\nEnter Choice: ")
 
@@ -89,10 +92,15 @@ class PersonalFinanceManager:
 
             elif choice == "5":
 
+                self.chart_menu(charts)
+
+            elif choice == "6":
+
                 expense.close_connection()
                 income.close_connection()
                 budget.close_connection()
                 report.close_connection()
+                charts.close_connection()
 
                 print("\nLogged Out Successfully.")
 
@@ -286,6 +294,60 @@ class PersonalFinanceManager:
 
                 break
             
+            else:
+
+                print("\nInvalid Choice.")
+
+    # ==========================================
+    # CHART MENU
+    # ==========================================
+
+    def chart_menu(self, charts):
+
+        while True:
+
+            print("\n" + "=" * 50)
+            print("          CHARTS")
+            print("=" * 50)
+
+            print("1. Expense Distribution")
+            print("2. Income vs Expense")
+            print("3. Monthly Expense Trend")
+            print("4. Budget vs Expense")
+            print("5. Savings Trend")
+            print("6. Top Spending Categories")
+            print("7. Back")
+
+            choice = input("\nEnter Choice: ")
+
+            if choice == "1":
+
+                charts.expense_distribution()
+
+            elif choice == "2":
+
+                charts.income_vs_expense_chart()
+
+            elif choice == "3":
+
+                charts.monthly_expense_trend()
+
+            elif choice == "4":
+
+                charts.budget_vs_expense_chart()
+
+            elif choice == "5":
+
+                charts.savings_trend()
+
+            elif choice == "6":
+
+                charts.top_spending_categories()
+
+            elif choice == "7":
+
+                break
+
             else:
 
                 print("\nInvalid Choice.")
