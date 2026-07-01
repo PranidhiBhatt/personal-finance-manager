@@ -2,6 +2,7 @@ from auth import AuthManager
 from expense import ExpenseManager
 from income import IncomeManager
 from budget import BudgetManager
+from report import ReportManager
 
 
 class PersonalFinanceManager:
@@ -54,6 +55,7 @@ class PersonalFinanceManager:
         expense = ExpenseManager(user)
         income = IncomeManager(user)
         budget = BudgetManager(user)
+        report = ReportManager(user)
 
         while True:
 
@@ -83,12 +85,14 @@ class PersonalFinanceManager:
 
             elif choice == "4":
 
-                print("\nReports Module Coming Soon!")
+                self.report_menu(report)
 
             elif choice == "5":
 
                 expense.close_connection()
                 income.close_connection()
+                budget.close_connection()
+                report.close_connection()
 
                 print("\nLogged Out Successfully.")
 
@@ -231,6 +235,60 @@ class PersonalFinanceManager:
                break
             else:
                print("\nInvalid Choice.")
+
+    # ==========================================
+    # REPORT MENU
+    # ==========================================
+
+    def report_menu(self, report):
+
+        while True:
+
+            print("\n" + "=" * 50)
+            print("            REPORTS")
+            print("=" * 50)
+
+            print("1. Financial Dashboard")
+            print("2. Budget Analysis")
+            print("3. Budget Summary")
+            print("4. Overspending Alerts")
+            print("5. Income vs Expense")
+            print("6. Savings Report")
+            print("7. Back")
+
+            choice = input("\nEnter Choice: ")
+
+            if choice == "1":
+
+                report.financial_dashboard()
+
+            elif choice == "2":
+
+                report.budget_analysis()
+
+            elif choice == "3":
+
+                report.budget_summary()
+
+            elif choice == "4":
+
+                report.overspending_alerts()
+
+            elif choice == "5":
+
+                report.income_vs_expense()
+
+            elif choice == "6":
+
+                report.savings_report()
+
+            elif choice == "7":
+
+                break
+            
+            else:
+
+                print("\nInvalid Choice.")
                 
 if __name__ == "__main__":
 
