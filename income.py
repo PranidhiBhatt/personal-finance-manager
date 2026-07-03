@@ -50,27 +50,19 @@ class IncomeManager:
             except ValueError:
 
                 print("Enter a valid amount.")
+
 # ==========================================
-# ADD INCOME
+# ADD INCOME DATA
 # ==========================================
 
-    def add_income(self):
+    def add_income_data(
+        self,
+        source,
+        amount,
+        income_date,
+        user_id
+    ):
 
-        print("\n" + "=" * 50)
-        print("ADD INCOME")
-        print("=" * 50)
-
-        # Logged-in user's ID
-        user_id = self.user["user_id"]
-
-        # Get income details
-        source = self.validate_source()
-        amount = self.validate_amount()
-
-        # Automatically get current date and time
-        income_date = datetime.now()
-
-        # Create Income object
         income = Income(
             source,
             amount,
@@ -97,12 +89,46 @@ class IncomeManager:
 
             self.connection.commit()
 
-            print("\nIncome added successfully!")
+            return True
 
         except Exception as e:
 
             print("\nError:", e)
 
+            return False
+                
+# ==========================================
+# ADD INCOME
+# ==========================================
+
+# ==========================================
+# ADD INCOME
+# ==========================================
+
+    def add_income(self):
+
+        print("\n" + "=" * 50)
+        print("ADD INCOME")
+        print("=" * 50)
+
+        user_id = self.user["user_id"]
+
+        source = self.validate_source()
+
+        amount = self.validate_amount()
+
+        income_date = datetime.now()
+
+        success = self.add_income_data(
+            source,
+            amount,
+            income_date,
+            user_id
+        )
+
+        if success:
+
+            print("\nIncome added successfully!")
 # ==========================================
 # SHOW INCOME
 # ==========================================
@@ -305,10 +331,10 @@ class IncomeManager:
             print("\nError:", e)
 
     # ==========================================
-    # TOTAL INCOME
+    # GET TOTAL INCOME
     # ==========================================
 
-    def total_income(self):
+    def get_total_income(self):
 
         sql = """
         SELECT SUM(amount)
@@ -326,13 +352,25 @@ class IncomeManager:
 
                 total = 0
 
-            print("\n" + "=" * 40)
-            print(f"Total Income : ₹{total:.2f}")
-            print("=" * 40)
+            return float(total)
 
         except Exception as e:
 
             print("\nError:", e)
+
+            return 0
+
+    # ==========================================
+    # TOTAL INCOME
+    # ==========================================
+
+    def total_income(self):
+
+        total = self.get_total_income()
+
+        print("\n" + "=" * 40)
+        print(f"Total Income : ₹{total:.2f}")
+        print("=" * 40)
 
     # ==========================================
     # CLOSE CONNECTION

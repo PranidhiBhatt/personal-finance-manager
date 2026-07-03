@@ -97,29 +97,21 @@ class ExpenseManager:
             return "No Description"
 
         return description
+
     # ==========================================
-    # ADD EXPENSE
+    # ADD EXPENSE DATA
     # ==========================================
 
-    def add_expense(self):
+    def add_expense_data(
+        self,
+        expense_type,
+        category,
+        amount,
+        description,
+        expense_date,
+        user_id
+    ):
 
-        print("\n" + "=" * 50)
-        print("ADD EXPENSE")
-        print("=" * 50)
-
-        # Logged-in user's ID
-        user_id = self.user["user_id"]
-
-        # Get expense details
-        expense_type = self.validate_expense_type()
-        category = self.choose_category()
-        amount = self.validate_amount()
-        description = self.validate_description()
-
-        # Automatically get current date and time
-        expense_date = datetime.now()
-
-        # Create Expense object
         expense = Expense(
             expense_type,
             category,
@@ -128,6 +120,7 @@ class ExpenseManager:
             description,
             user_id
         )
+
         sql = """
         INSERT INTO Expenses
         (user_id, expense_name, category, amount, expense_date, description)
@@ -144,14 +137,49 @@ class ExpenseManager:
         )
 
         try:
+
             self.cursor.execute(sql, values)
+
             self.connection.commit()
 
-            print("\nExpense added successfully!")
+            return True
 
         except Exception as e:
+
             print("\nError:", e)
 
+            return False
+    # ==========================================
+    # ADD EXPENSE
+    # ==========================================
+
+    def add_expense(self):
+
+        print("\n" + "=" * 50)
+        print("ADD EXPENSE")
+        print("=" * 50)
+
+        user_id = self.user["user_id"]
+
+        expense_type = self.validate_expense_type()
+        category = self.choose_category()
+        amount = self.validate_amount()
+        description = self.validate_description()
+
+        expense_date = datetime.now()
+
+        success = self.add_expense_data(
+            expense_type,
+            category,
+            amount,
+            description,
+            expense_date,
+            user_id
+        )
+
+        if success:
+
+            print("\nExpense added successfully!")
     # ==========================================
     # SHOW EXPENSES
     # ==========================================
@@ -294,7 +322,7 @@ class ExpenseManager:
 
         except Exception as e:
             print("\nError:", e)
-        # ==========================================
+    # ==========================================
     # DELETE EXPENSE
     # ==========================================
 
@@ -343,11 +371,12 @@ class ExpenseManager:
 
         except Exception as e:
             print("\nError:", e)
+
     # ==========================================
-    # TOTAL EXPENSE
+    # GET TOTAL EXPENSE
     # ==========================================
 
-    def total_expense(self):
+    def get_total_expense(self):
 
         sql = """
         SELECT SUM(amount)
@@ -362,14 +391,27 @@ class ExpenseManager:
             total = self.cursor.fetchone()[0]
 
             if total is None:
+
                 total = 0
 
-            print("\n" + "=" * 40)
-            print(f"Total Expense : ₹{total:.2f}")
-            print("=" * 40)
+            return float(total)
 
         except Exception as e:
+
             print("\nError:", e)
+
+            return 0
+    # ==========================================
+    # TOTAL EXPENSE
+    # ==========================================
+
+    def total_expense(self):
+
+        total = self.get_total_expense()
+
+        print("\n" + "=" * 40)
+        print(f"Total Expense : ₹{total:.2f}")
+        print("=" * 40)
     # ==========================================
     # SEARCH BY CATEGORY
     # ==========================================
