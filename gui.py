@@ -3,10 +3,15 @@ import customtkinter as ctk
 from expense import ExpenseManager
 from income import IncomeManager
 from budget import BudgetManager
+from report import ReportManager
+from charts import ChartsManager
 
 from pages.dashboard_page import DashboardPage
 from pages.expense_page import ExpensePage
 from pages.income_page import IncomePage
+from pages.budgets_page import BudgetPage
+from pages.reports_page import ReportPage
+from pages.charts_page import ChartsPage
 
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
@@ -23,6 +28,8 @@ class FinanceGUI(ctk.CTk):
         self.expense_manager = ExpenseManager(user)
         self.income_manager = IncomeManager(user)
         self.budget_manager = BudgetManager(user)
+        self.report_manager = ReportManager(user)
+        self.charts_manager = ChartsManager(user)
 
         self.title("Personal Finance Manager")
 
@@ -79,7 +86,7 @@ class FinanceGUI(ctk.CTk):
 
                 command = self.destroy
 
-            elif name in ["Dashboard", "Expenses", "Income"]:
+            elif name in ["Dashboard", "Expenses", "Income", "Budget", "Reports", "Charts"]:
                 command = lambda page=name: self.show_page(page)
 
             else:
@@ -170,6 +177,43 @@ class FinanceGUI(ctk.CTk):
             relheight=1
         )
 
+        self.pages["Budget"] = BudgetPage(
+            self.page_container,
+            self.budget_manager,
+            self.pages["Dashboard"].update_dashboard
+        )
+
+        self.pages["Budget"].place(
+            relx=0,
+            rely=0,
+            relwidth=1,
+            relheight=1
+        )
+
+        self.pages["Reports"] = ReportPage(
+            self.page_container,
+            self.report_manager,
+        )
+
+        self.pages["Reports"].place(
+            relx=0,
+            rely=0,
+            relwidth=1,
+            relheight=1
+        )
+
+        self.pages["Charts"] = ChartsPage(
+            self.page_container,
+            self.charts_manager,
+        )
+
+        self.pages["Charts"].place(
+            relx=0,
+            rely=0,
+            relwidth=1,
+            relheight=1
+        )
+        
         self.show_page("Dashboard")
 
     

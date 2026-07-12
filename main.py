@@ -1,9 +1,11 @@
 from auth import AuthManager
+from login import LoginWindow
+
 from expense import ExpenseManager
 from income import IncomeManager
 from budget import BudgetManager
 from report import ReportManager
-from charts import ChartManager
+from charts import ChartsManager
 
 
 class PersonalFinanceManager:
@@ -354,6 +356,6 @@ class PersonalFinanceManager:
                 
 if __name__ == "__main__":
 
-    app = PersonalFinanceManager()
+    app = LoginWindow()
 
-    app.start()
+    app.mainloop()

@@ -1,8 +1,6 @@
 from database import connect_db
-import matplotlib.pyplot as plt
 
-
-class ChartManager:
+class ChartsManager:
 
     def __init__(self, user):
 
@@ -16,27 +14,10 @@ class ChartManager:
         self.cursor = self.connection.cursor()
 
     # ==========================================
-    # MONTH
+    # EXPENSE By Category
     # ==========================================
 
-    def validate_month(self):
-
-        while True:
-
-            month = input("Enter Month (YYYY-MM): ").strip()
-
-            if len(month) == 7 and month[4] == "-":
-                return month
-
-            print("Invalid format. Use YYYY-MM.")
-
-    # ==========================================
-    # EXPENSE DISTRIBUTION
-    # ==========================================
-
-    def expense_distribution(self):
-
-        month = self.validate_month()
+    def expense_by_category(self, month):
 
         sql = """
         SELECT
@@ -60,47 +41,23 @@ class ChartManager:
             )
 
             records = self.cursor.fetchall()
-            print(records)
 
             if not records:
 
-                print("\nNo expenses found.")
-                return
-
-            categories = []
-            amounts = []
-
-            for row in records:
-
-                categories.append(row[0])
-                amounts.append(float(row[1]))
-
-            plt.figure(figsize=(8,8))
-
-            plt.pie(
-                amounts,
-                labels=categories,
-                autopct="%1.1f%%",
-                startangle=90
-            )
-
-            plt.title(f"Expense Distribution ({month})")
-
-            plt.axis("equal")
-
-            plt.show()
-
+                return []
+            
+            return records
+        
         except Exception as e:
 
             print("\nError:", e)
+            return None
 
     # ==========================================
     # INCOME VS EXPENSE CHART
     # ==========================================
 
-    def income_vs_expense_chart(self):
-
-        month = self.validate_month()
+    def income_vs_expense(self, month):
 
         income_sql = """
         SELECT COALESCE(SUM(amount),0)
@@ -139,28 +96,17 @@ class ChartManager:
             )
 
             total_expense = float(self.cursor.fetchone()[0])
-
-            labels = ["Income", "Expense"]
-            amounts = [total_income, total_expense]
-
-            plt.figure(figsize=(6, 5))
-
-            plt.bar(labels, amounts)
-
-            plt.title(f"Income vs Expense ({month})")
-            plt.xlabel("Category")
-            plt.ylabel("Amount (₹)")
-
-            for i, value in enumerate(amounts):
-                plt.text(i, value, f"₹{value:.2f}", ha="center", va="bottom")
-
-            plt.tight_layout()
-            plt.show()
-
+            
+            return (
+                total_income,
+                total_expense
+            )
+            
         except Exception as e:
 
             print("\nError:", e)
-
+            return None
+        
     # ==========================================
     # MONTHLY EXPENSE TREND
     # ==========================================
@@ -196,49 +142,20 @@ class ChartManager:
 
             if not records:
 
-                print("\nNo expense records found.")
-                return
-
-            months = []
-            expenses = []
-
-            for row in records:
-
-                months.append(row[0])
-                expenses.append(float(row[1]))
-
-            plt.figure(figsize=(8,5))
-
-            plt.plot(
-                months,
-                expenses,
-                marker="o",
-                linewidth=2
-            )
-
-            plt.title("Monthly Expense Trend")
-
-            plt.xlabel("Month")
-
-            plt.ylabel("Expense (₹)")
-
-            plt.grid(True)
-
-            plt.tight_layout()
-
-            plt.show()
-
+                return []
+            
+            return records
+        
         except Exception as e:
 
             print("\nError:", e)
+            return None
 
     # ==========================================
     # BUDGET VS EXPENSE CHART
     # ==========================================
 
-    def budget_vs_expense_chart(self):
-
-        month = self.validate_month()
+    def budget_vs_expense(self, month):
 
         sql = """
         SELECT
@@ -280,57 +197,14 @@ class ChartManager:
             records = self.cursor.fetchall()
 
             if not records:
+                return []
 
-                print("\nNo budget records found.")
-                return
-
-            categories = []
-            budgets = []
-            expenses = []
-
-            for row in records:
-
-                categories.append(row[0])
-                budgets.append(float(row[1]))
-                expenses.append(float(row[2]))
-
-            import numpy as np
-
-            x = np.arange(len(categories))
-            width = 0.35
-
-            plt.figure(figsize=(10,6))
-
-            plt.bar(
-                x - width/2,
-                budgets,
-                width,
-                label="Budget"
-            )
-
-            plt.bar(
-                x + width/2,
-                expenses,
-                width,
-                label="Expense"
-            )
-
-            plt.xticks(x, categories)
-
-            plt.title(f"Budget vs Expense ({month})")
-
-            plt.xlabel("Category")
-            plt.ylabel("Amount (₹)")
-
-            plt.legend()
-
-            plt.tight_layout()
-
-            plt.show()
+            return records
 
         except Exception as e:
 
             print("\nError:", e)
+            return None
 
     # ==========================================
     # SAVINGS TREND
@@ -377,34 +251,28 @@ class ChartManager:
                 expense = expense_dict.get(month, 0)
 
                 savings.append(income - expense)
-
+                
             if not months:
 
-                print("\nNo records found.")
-                return
+                return []
 
-            plt.figure(figsize=(8,5))
+            records = []
 
-            plt.plot(
-                months,
-                savings,
-                marker="o",
-                linewidth=2
-            )
+            for index in range(len(months)):
 
-            plt.title("Monthly Savings Trend")
-            plt.xlabel("Month")
-            plt.ylabel("Savings (₹)")
+                records.append(
+                    (
+                        months[index],
+                        savings[index]
+                    )
+                )
 
-            plt.grid(True)
-
-            plt.tight_layout()
-
-            plt.show()
+            return records
 
         except Exception as e:
 
             print("\nError:", e)
+            return None
 
     # ==========================================
     # TOP SPENDING CATEGORIES
@@ -434,34 +302,14 @@ class ChartManager:
             records = self.cursor.fetchall()
 
             if not records:
+                return []
 
-                print("\nNo expense records found.")
-                return
-
-            categories = []
-            totals = []
-
-            for row in records:
-
-                categories.append(row[0])
-                totals.append(float(row[1]))
-
-            plt.figure(figsize=(8,5))
-
-            plt.barh(categories, totals)
-
-            plt.title("Top Spending Categories")
-
-            plt.xlabel("Amount (₹)")
-            plt.ylabel("Category")
-
-            plt.tight_layout()
-
-            plt.show()
+            return records
 
         except Exception as e:
 
             print("\nError:", e)
+            return None
 
     # ==========================================
     # CLOSE CONNECTION
@@ -475,3 +323,4 @@ class ChartManager:
             self.connection.close()
 
             print("\nDatabase connection closed.")
+            return None

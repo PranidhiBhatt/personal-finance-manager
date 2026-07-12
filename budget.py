@@ -66,22 +66,26 @@ class BudgetManager:
                 print("Enter a valid amount.")
 
 # ==========================================
-# ADD BUDGET DATA
+# ADD BUDGET
 # ==========================================
 
-    def add_budget_data(
-        self,
-        category,
-        budget_amount,
-        month,
-        user_id
-    ):
+    def add_budget(self):
+
+        print("\n" + "=" * 50)
+        print("ADD BUDGET")
+        print("=" * 50)
+
+        user_id = self.user["user_id"]
+
+        category = self.validate_category()
+        amount = self.validate_amount()
+        month = self.validate_month()
 
         budget = Budget(
             None,
             user_id,
             category,
-            budget_amount,
+            amount,
             month
         )
 
@@ -104,44 +108,11 @@ class BudgetManager:
 
             self.connection.commit()
 
-            return True
+            print("\nBudget added successfully!")
 
         except Exception as e:
 
             print("\nError:", e)
-
-            return False
-
-# ==========================================
-# ADD BUDGET
-# ==========================================
-
-# ==========================================
-# ADD BUDGET
-# ==========================================
-
-    def add_budget(self):
-
-        print("\n" + "=" * 50)
-        print("ADD BUDGET")
-        print("=" * 50)
-
-        user_id = self.user["user_id"]
-
-        category = self.validate_category()
-        amount = self.validate_amount()
-        month = self.validate_month()
-
-        success = self.add_budget_data(
-            category,
-            amount,
-            month,
-            user_id
-        )
-
-        if success:
-
-            print("\nBudget added successfully!")
 # ==========================================
 # SHOW BUDGETS
 # ==========================================
@@ -291,11 +262,11 @@ class BudgetManager:
 
             print("\nError:", e)
 
-    # ==========================================
-    # GET TOTAL BUDGET
-    # ==========================================
+# ==========================================
+# TOTAL BUDGET
+# ==========================================
 
-    def get_total_budget(self):
+    def total_budget(self):
 
         sql = """
         SELECT SUM(budget_amount)
@@ -313,25 +284,13 @@ class BudgetManager:
 
                 total = 0
 
-            return float(total)
+            print("\n" + "=" * 40)
+            print(f"Total Budget : ₹{total:.2f}")
+            print("=" * 40)
 
         except Exception as e:
 
             print("\nError:", e)
-
-            return 0
-
-# ==========================================
-# TOTAL BUDGET
-# ==========================================
-
-    def total_budget(self):
-
-        total = self.get_total_budget()
-
-        print("\n" + "=" * 40)
-        print(f"Total Budget : ₹{total:.2f}")
-        print("=" * 40)
 
 # ==========================================
 # DELETE BUDGET
