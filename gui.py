@@ -5,6 +5,7 @@ from income import IncomeManager
 from budget import BudgetManager
 from report import ReportManager
 from charts import ChartsManager
+from account import AccountManager
 
 from pages.dashboard_page import DashboardPage
 from pages.expense_page import ExpensePage
@@ -12,6 +13,7 @@ from pages.income_page import IncomePage
 from pages.budgets_page import BudgetPage
 from pages.reports_page import ReportPage
 from pages.charts_page import ChartsPage
+from pages.account_page import AccountPage
 
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
@@ -30,6 +32,7 @@ class FinanceGUI(ctk.CTk):
         self.budget_manager = BudgetManager(user)
         self.report_manager = ReportManager(user)
         self.charts_manager = ChartsManager(user)
+        self.account_manager = AccountManager(user)
 
         self.title("Personal Finance Manager")
 
@@ -76,6 +79,8 @@ class FinanceGUI(ctk.CTk):
 
             "Charts",
 
+            "Account",
+
             "Logout"
 
         ]
@@ -86,7 +91,7 @@ class FinanceGUI(ctk.CTk):
 
                 command = self.destroy
 
-            elif name in ["Dashboard", "Expenses", "Income", "Budget", "Reports", "Charts"]:
+            elif name in ["Dashboard", "Expenses", "Income", "Budget", "Reports", "Charts", "Account"]:
                 command = lambda page=name: self.show_page(page)
 
             else:
@@ -208,6 +213,19 @@ class FinanceGUI(ctk.CTk):
         )
 
         self.pages["Charts"].place(
+            relx=0,
+            rely=0,
+            relwidth=1,
+            relheight=1
+        )
+
+        self.pages["Account"] = AccountPage(
+            self.page_container,
+            self.account_manager,
+            self.user
+        )
+
+        self.pages["Account"].place(
             relx=0,
             rely=0,
             relwidth=1,
