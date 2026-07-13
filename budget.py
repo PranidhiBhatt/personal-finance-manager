@@ -113,6 +113,8 @@ class BudgetManager:
         except Exception as e:
 
             print("\nError:", e)
+            return False
+            
 # ==========================================
 # SHOW BUDGETS
 # ==========================================
@@ -167,6 +169,7 @@ class BudgetManager:
         except Exception as e:
 
             print("\nError:", e)
+            return False
 
 # ==========================================
 # UPDATE BUDGET
@@ -261,6 +264,7 @@ class BudgetManager:
         except Exception as e:
 
             print("\nError:", e)
+            return False
 
 # ==========================================
 # TOTAL BUDGET
@@ -284,13 +288,12 @@ class BudgetManager:
 
                 total = 0
 
-            print("\n" + "=" * 40)
-            print(f"Total Budget : ₹{total:.2f}")
-            print("=" * 40)
+            return float(total)
 
         except Exception as e:
 
             print("\nError:", e)
+            return 0
 
 # ==========================================
 # DELETE BUDGET
@@ -347,6 +350,8 @@ class BudgetManager:
         except Exception as e:
 
             print("\nError:", e)
+            return False
+            
 # ==========================================
 # CLOSE CONNECTION
 # ==========================================

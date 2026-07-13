@@ -73,6 +73,8 @@ class DashboardPage(ctk.CTkFrame):
             padx=15
         )
 
+        self.update_dashboard()
+
     def create_card(self, parent, title):
 
         frame = ctk.CTkFrame(
@@ -110,7 +112,7 @@ class DashboardPage(ctk.CTkFrame):
 
         expense = self.expense_manager.get_total_expense()
 
-        budget = self.budget_manager.get_total_budget()
+        budget = self.budget_manager.total_budget()
 
         savings = income - expense
 
